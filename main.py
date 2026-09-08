@@ -13,7 +13,7 @@ def add_expenses():
         print("invalid id ")
         return
         
-    name = input("Enter expense name: ")
+    name = input("Enter expense name: ").strip() 
     if(name==""):
         print("invalid name")
         return
@@ -122,7 +122,7 @@ def update_expenses():
             except ValueError:
                 print("Invalid amount")
                 return
-            new_name=input("enter the new name: ")
+            new_name=input("enter the new name: ").strip()
             if new_name == "":
                 print("Invalid name")
                 return
@@ -131,7 +131,7 @@ def update_expenses():
             for category in categories:
                 print(category)
 
-            new_category = input("Enter the new category: ")
+            new_category = input("Enter the new category: ").strip()
 
             if new_category not in categories:
                 print("Invalid category")
@@ -145,21 +145,21 @@ def update_expenses():
         print("No expense is present with this ID")
 
 def save_expenses():
-    f=open("expenses.json","w")
-    data=[]
-    for expense in expenses:
+    with open("expenses.json","w") as f:
+      data=[]
+      for expense in expenses:
         expense_copy=expense.copy()
         expense_copy["date"]=str(expense_copy["date"])
         data.append(expense_copy)
-    json.dump(data,f)
-    f.close()
+      json.dump(data,f)
+
+    
 def load_expenses():
     global expenses
     try:
-       f= open("expenses.json","r")
-       expenses=json.load(f)
-       f.close()
-       print("Expenses loaded successfully")
+       with open("expenses.json","r") as f:
+        expenses=json.load(f)
+        print("Expenses loaded successfully")
     except FileNotFoundError:
         expenses = []
         print("No saved expenses found")
